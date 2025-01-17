@@ -26,6 +26,7 @@ const signinValidation = [
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 characters"),
+    
 ];
 
 // Validation rules for Task creation
@@ -36,6 +37,12 @@ const taskValidation = [
   body("description")
     .isLength({ min: 5 })
     .withMessage("Task description must be at least 5 characters"),
+    body("duration")
+    .isLength({min:7})
+    .withMessage("Task duration must be in 7 character"),
+    body("email")
+    .isEmail()
+    .withMessage("Please enter a valid email address"),
 ];
 
 // Validation rules for Update Task

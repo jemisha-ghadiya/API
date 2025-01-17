@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config/jwt');
 const db = require('../config/db');
 const { validationResult } = require('express-validator');
+// const{  signinValidation}=require('../utils/validation')
 
 // Signup Logic
 // const signup = async (req, res) => {
@@ -22,18 +23,26 @@ const { validationResult } = require('express-validator');
 
 //   res.json({ message: "Signup successful", email: insertResult.rows[0].username });
 // };
-const signup = async (req, res) => {
+const signup = async (req, res)=> {
   const { email, password } = req.body;
+ 
+  if (!password || password.trim() === '') {
+    return res.status(400).json({ message: "Password is required" });
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
-
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
+    // const hashedPassword = await bcrypt.hash(password, 6);
     // Check if the user already exists using db.query
     const result = await db.query("SELECT * FROM signup WHERE username = $1", [email]);
     console.log(result);
     
 
     if (result.rows.length > 0) {
-      return res.json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
     // Insert the new user into the database
@@ -43,38 +52,70 @@ const signup = async (req, res) => {
     );
 
     // Return success message
-    res.json({ message: "Signup successful", email: insertResult.rows[0].username });
+    res.status(400).json({ message: "Signup successful", email: insertResult.rows[0].username });
   } catch (err) {
     console.error("Error in signup:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 // Login Logic
+// const login = async (req, res) => {
+//   const { email, password } = req.body;
+//   const result = await db.query("SELECT * FROM signup WHERE username = $1", [email]);
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({ errors: errors.array() });
+//   }
+//   if (!result.rows.length) {
+//     return res.status(400).json({ message: "User not found" });
+//   }
+
+//   const validPassword = await bcrypt.compare(password, result.rows[0].password);
+//   if (!validPassword) return res.status(400).json({ message: "Invalid password" });
+
+//   const token = jwt.sign({ userId: result.rows[0].id }, SECRET_KEY, { expiresIn: '1d' });
+//   res.status(200).json({ message: "Login successful", token, user: result.rows[0] });
+// };
+
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const result = await db.query("SELECT * FROM signup WHERE username = $1", [email]);
 
-  if (!result.rows.length) {
-    return res.status(400).json({ message: "User not found" });
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
 
-  const validPassword = await bcrypt.compare(password, result.rows[0].password);
-  if (!validPassword) return res.status(400).json({ message: "Invalid password" });
+  // Proceed with login logic
+  try {
+    const result = await db.query("SELECT * FROM signup WHERE username = $1", [email]);
+    if (!result.rows.length) {
+      return res.status(400).json({ message: "User not found" });
+    }
 
-  const token = jwt.sign({ userId: result.rows[0].id }, SECRET_KEY, { expiresIn: '1d' });
-  res.status(200).json({ message: "Login successful", token, user: result.rows[0] });
+    const validPassword = await bcrypt.compare(password, result.rows[0].password);
+    if (!validPassword) return res.status(400).json({ message: "Invalid password" });
+
+    const token = jwt.sign({ userId: result.rows[0].id }, SECRET_KEY, { expiresIn: '1d' });
+    res.status(200).json({ message: "Login successful", token, user: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 const get_userdata= async (req, res) => {
+  // const { id } = req.params;
+  console.log(req.userId,"hhhhhhhhhhhhhhhhhj");
+  
   try {
     // Query to fetch all users from the signup table
-    const result = await db.query("SELECT * FROM signup");
+    const result = await db.query("SELECT * FROM signup where id=$1",[req.userId]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
 
     // Send the users' data as a JSON response
-    res.status(200).json({ users: result.rows });
+    res.status(200).json({ result: result.rows });
   } catch (error) {
     console.error("Error fetching signup data:", error);
     res
@@ -122,7 +163,7 @@ const get_userdata= async (req, res) => {
 
       // Update the user's details in the database
       const updateResult = await db.query(
-        "UPDATE signup SET username = $1, password = $2 WHERE id = $3 RETURNING id, username,password",
+        "UPDATE signup SET username = COALESCE($1,username), password = COALESCE($2,password) WHERE id = $3 RETURNING id, username,password",
         [updatedemail, updatedPassword, parseInt(id)]
       );
 

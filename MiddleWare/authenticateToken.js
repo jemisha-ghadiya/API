@@ -13,6 +13,7 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
+    
     console.log(decoded);
     
     // const userdata = await db.query("SELECT * FROM signup WHERE id = $1", [decoded.userId]);

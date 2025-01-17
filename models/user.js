@@ -1,18 +1,18 @@
 // models/user.js
-const db = require('../config/db');  // Assuming db.js contains your connection
+const db = require('../config/db'); 
 
-// User model class with methods for common operations
+
 class User {
   // Find a user by email
   static async findByEmail(email) {
     const result = await db.query('SELECT * FROM signup WHERE username = $1', [email]);
-    return result.rows[0]; // Returns the first row of the result, if found
+    return result.rows[0]; 
   }
 
   // Find a user by ID
   static async findById(id) {
     const result = await db.query('SELECT * FROM signup WHERE id = $1', [id]);
-    return result.rows[0]; // Returns the first row of the result, if found
+    return result.rows[0]; 
   }
 
   // Create a new user
@@ -21,7 +21,7 @@ class User {
       'INSERT INTO signup (username, password) VALUES ($1, $2) RETURNING id, username',
       [email, password]
     );
-    return result.rows[0]; // Returns the newly created user
+    return result.rows[0]; 
   }
 
   // Update user details

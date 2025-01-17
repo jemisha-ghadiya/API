@@ -83,7 +83,7 @@ const update= async (req, res) => {
 
     // Step 3: Proceed to update the task if the user is authorized
     const updateResult = await db.query(
-      "UPDATE todolist SET task = $1, description = $2, duration = $3, username = $4 WHERE id = $5 RETURNING *",
+      "UPDATE todolist SET task = COALESCE($1, task), description = COALESCE($2, description), duration = COALESCE($3, duration), username = COALESCE($4, username) WHERE id = $5 RETURNING *",
       [task, description, duration, email, id]
     );
 
@@ -108,22 +108,31 @@ const update= async (req, res) => {
   }
 };
 
-const delete_todo= async (req, res) => {
-  const { id } = req.params;
-  // const { username } = req.user;
+const delete_todo = async (req, res) => {
+  const { id } = req.params; // Task ID from the URL
+  const { userId } = req; // User ID from the token (assuming it's added to the request)
 
   try {
-    const result = await db.query("DELETE FROM todolist WHERE id = $1", [id]);
-    // if (result.rows.length === 0) {
-    //   return res
-    //     .status(404)
-    //     .json({ error: "Task not found or you do not have permission" });
-    // }
-    // res.status(200).json({ message: "Task deleted successfully" });
+    // Step 1: Ensure the user is authorized to delete the task by matching their user ID with the task's signup_id
+    const taskResult = await db.query(
+      "SELECT * FROM todolist WHERE id = $1 AND signup_id = $2",
+      [id, userId]
+    );
+
+    // Step 2: Check if the task exists and belongs to the user
+    if (taskResult.rows.length === 0) {
+      return res.status(404).json({ message: "Task not found or you do not have permission to delete this task" });
+    }
+
+    // Step 3: Proceed to delete the task if the user is authorized
+    await db.query("DELETE FROM todolist WHERE id = $1", [id]);
+
+    // Step 4: Successfully deleted the task
+    res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
     console.error("Error deleting task:", error);
     res.status(500).json({ error: "Failed to delete task" });
   }
-  res.send({ message: "delete successfully" });
 };
+
 module.exports = {create_todo ,retrive_data,update,delete_todo};

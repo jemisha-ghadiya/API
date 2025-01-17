@@ -1,31 +1,45 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const dotenv = require('dotenv');
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+const dotenv = require("dotenv");
+const authenticateToken=require('./MiddleWare/authenticateToken.js')
+const {signup,login,get_userdata,update_userdata}=require('./controllers/user.js')
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Database connection
-const db = require('./config/db');
+// function server() {
+  // Database connection
+  const db = require("./config/db");
+  db.connect()
+  .then(() => console.log("Database connected successfully"));
+  
+  // Middleware
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.set("view engine", "ejs");
+  app.set("views", path.join(__dirname, "views"));
 
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+  // Routes
 
-Routes
+  const userRoutes = require("./routes/user");
+  const taskRoutes = require("./routes/task");
+  app.get("/user", (req, res) => {
+    res.status(200).send({ message: "welcome to the user routes" });
+  });
+  //app.use(authRoutes);
+  app.use(userRoutes);
+  app.use(taskRoutes);
+  app.post('/signup',signup)
+  app.post('/login',login)
+  app.get('/users',get_userdata,authenticateToken)
+  app.put('/user/:id',authenticateToken,update_userdata)
+//   Start the server
+  const server=app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+// }
 
-const userRoutes = require('./routes/user');
-const taskRoutes = require('./routes/task');
+ module.exports=app;
 
-//app.use(authRoutes);
-app.use(userRoutes);
-app.use(taskRoutes);
-
-// Start the server
-// app.listen(port, () => {
-//   console.log(`Server running on http://localhost:${port}`);
-// });
