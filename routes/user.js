@@ -3,8 +3,8 @@ const { body } = require("express-validator");
 const {signup,login,get_userdata,update_userdata,delete_userdata} = require("../controllers/user.js");
 const authenticateToken = require("../MiddleWare/authenticateToken");
 const router = express.Router();
-const{  signinValidation}=require('../utils/validation')
-//  const{signupcontroller}=require("../__tests__/user.js");
+// const{  signinValidation}=require('../utils/validation')
+
 /**
  * @swagger
  * /user/signup:
@@ -47,7 +47,7 @@ const{  signinValidation}=require('../utils/validation')
  *         description: Internal server error
  */
 
-router.post("/signup",signinValidation,signup);
+router.post("/signup",signup);
 /**
  * @swagger
  * /user/login:
@@ -90,7 +90,7 @@ router.post("/signup",signinValidation,signup);
  *         description: Internal server error
  */
 
-router.post("/login",signinValidation,login);
+router.post("/login",login);
 /**
  * @swagger
  * /user/users:

@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv");
-const authenticateToken=require('./MiddleWare/authenticateToken.js')
+// const authenticateToken=require('./MiddleWare/authenticateToken.js')
 const {signup,login,get_userdata,update_userdata}=require('./controllers/user.js')
 dotenv.config();
 
@@ -33,8 +33,8 @@ const port = process.env.PORT || 3000;
   app.use(taskRoutes);
   app.post('/signup',signup)
   app.post('/login',login)
-  app.get('/users',get_userdata,authenticateToken)
-  app.put('/user/:id',authenticateToken,update_userdata)
+  // app.get('/users',get_userdata,authenticateToken)
+  // app.put('/user/:id',authenticateToken,update_userdata)
 //   Start the server
   const server=app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
