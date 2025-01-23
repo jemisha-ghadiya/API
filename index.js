@@ -53,7 +53,7 @@ const options = {
 //   apis:["./routes/*.js"],
 // };
 const spaces=swaggerjsdoc(options)
-app.use("/api",swaggerui.serve,swaggerui.setup(spaces))
+app.use("/y",swaggerui.serve,swaggerui.setup(spaces))
 // Start servers
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
