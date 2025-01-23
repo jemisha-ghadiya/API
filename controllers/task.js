@@ -22,6 +22,7 @@ const create_todo = [taskValidation,async (req, res) => {
   }
 
   try {
+    
     await todotask.createtododata(
       task,
       description,
@@ -29,7 +30,9 @@ const create_todo = [taskValidation,async (req, res) => {
       email,
       req.userId
     );
-    res.send({ message: "Data inserted successfully" });
+    
+    res.status(200).json({ message: "Data inserted successfully" });
+    // throw new Error("Simulated internal server error");  
   } catch (error) {
     console.error("Error adding task:", error);
     res.status(500).json({ error: "Failed to add task" });

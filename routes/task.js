@@ -1,7 +1,6 @@
 
 const express = require('express');
 const router = express.Router();
-
 const {create_todo,retrive_data,update,delete_todo} = require('../controllers/task');
 const authenticateToken = require('../MiddleWare/authenticateToken');
  router.use(authenticateToken)

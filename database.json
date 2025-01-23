@@ -1,0 +1,10 @@
+{
+    "dev": {
+      "driver": "pg",
+      "user": "postgres",
+      "password": "root",
+      "host": "localhost",
+      "database": "migration",
+      "port":"4000"
+    }
+  }

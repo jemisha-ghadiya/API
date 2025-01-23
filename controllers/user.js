@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config/jwt');
 const db = require('../config/db');
 const { validationResult } = require('express-validator');
-const user=require('../module/user.js')
+const user=require('../module/user')
 const{  signinValidation}=require('../utils/validation.js')
 // const{  signinValidation}=require('../utils/validation')
 
@@ -98,6 +98,9 @@ const get_userdata= async (req, res) => {
   
   try {
     const result = await user.findUserById(req.userId);
+    if (!result || !result.rows) { 
+      return res.status(500).json({ message: "Error fetching user data." });
+    }
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "No users found" });
     }
@@ -123,6 +126,7 @@ const get_userdata= async (req, res) => {
     console.log(id,"cbbbbbbbb")
     try {
       const userResult = await user.findUserById(id);
+      
       if (userResult.rows.length === 0) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -168,13 +172,12 @@ const get_userdata= async (req, res) => {
       console.log("Database query result:", userResult.rows);
   
       if (userResult.rows.length === 0) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "User not found for delete time" });
       }
   
-      
-      console.log("Executing DELETE query: DELETE FROM signup WHERE id = $1", [
-        parseInt(id),
-      ]);
+      // console.log("Executing DELETE query: DELETE FROM signup WHERE id = $1", [
+      //   parseInt(id),
+      // ]);
       const deleteResult = await user.deleteUser(parseInt(id));
   
       console.log("Delete Result:", deleteResult); 
@@ -189,8 +192,11 @@ const get_userdata= async (req, res) => {
         message: "User deleted successfully",
         deletedUserId: deleteResult.rows[0].id, 
       });
+      // throw new Error("Simulated server error");
+
     } catch (error) {
-      console.error("Error deleting user data:", error.message);
+      console.error(error);
+      // console.error("Error deleting user data:", error.message);
       res.status(500).json({
         message:
           "An error occurred while deleting the user data. Please try again later.",
@@ -200,5 +206,5 @@ const get_userdata= async (req, res) => {
   };
 
 
-module.exports = { signup, login,get_userdata,update_userdata ,delete_userdata};
+module.exports = { signup, login, get_userdata,update_userdata ,delete_userdata};
 

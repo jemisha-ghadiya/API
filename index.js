@@ -41,6 +41,7 @@ const options = {
     },
     host: 'localhost:3000', // Replace with your actual host
     basePath: '/', // Base path for your API
+    
   },
   apis: ['./routes/*.js'], // Path to the API docs (e.g., route files where you use @swagger comments)
 };
