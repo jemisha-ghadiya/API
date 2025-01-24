@@ -206,7 +206,7 @@ describe('User Update API Tests', () => {
   });
 
 describe("DELETE /user/:id", () => {
-  let userId=40;
+  let userId=38;
   let validToken; 
 
   before(async () => {

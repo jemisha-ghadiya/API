@@ -91,19 +91,14 @@ router.post("/signup",signup);
  */
 
 router.post("/login",login);
+
 /**
  * @swagger
  * /user/users:
  *   get:
- *     description: Retrieves a list of all users or the logged-in user's data (depending on the implementation)
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: The JWT token for authentication
- *         required: true
- *         schema:
- *           type: string
- *           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQyLCJpYXQiOjE3MzY3NjkxNzMsImV4cCI6MTczNjg1NTU3M30.BQW_7wPKYdc5dv7TTWgce6TriIy-2Et5TMRnlq-HJx4"
+ *     description: Retrieves a list of all users or the logged-in user's data
+ *     security:
+ *       - BearerAuth: []  # Correctly indent security definitions, no inline comments
  *     responses:
  *       200:
  *         description: Successfully retrieved user data
@@ -130,12 +125,15 @@ router.post("/login",login);
  *         description: Internal server error
  */
 
+
 router.get("/users",authenticateToken, get_userdata);
 /**
  * @swagger
  * /user/user/{id}:
  *   put:
  *     description: Updates a user's details by their ID.
+ *     security:
+ *       - BearerAuth: []  # This also requires a Bearer token
  *     parameters:
  *       - in: path
  *         name: id
@@ -197,6 +195,8 @@ router.put("/user/:id",authenticateToken, update_userdata);
  * /user/user/{id}:
  *   delete:
  *     description: Deletes a user by their ID.
+ *     security:
+ *       - BearerAuth: []  # Indicates that a Bearer token is required for this endpoint
  *     parameters:
  *       - in: path
  *         name: id
@@ -205,13 +205,6 @@ router.put("/user/:id",authenticateToken, update_userdata);
  *         schema:
  *           type: integer
  *           example: 42
- *       - in: header
- *         name: Authorization
- *         description: Bearer token to authenticate the user
- *         required: true
- *         schema:
- *           type: string
- *           example: "Bearer <JWT-TOKEN>"
  *     responses:
  *       200:
  *         description: User deleted successfully
@@ -223,13 +216,12 @@ router.put("/user/:id",authenticateToken, update_userdata);
  *               example: "User deleted successfully"
  *       400:
  *         description: Invalid or missing parameters
- *       401:
- *         description: Unauthorized - Invalid or missing token
  *       404:
  *         description: User not found
  *       500:
  *         description: Internal server error
  */
+
 
 router.delete("/user/:id", authenticateToken, delete_userdata);
 

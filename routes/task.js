@@ -11,14 +11,9 @@ const authenticateToken = require('../MiddleWare/authenticateToken');
  * /task/todopage:
  *   post:
  *     description: Creates a new todo task with the provided task details and authorization token.
+ *     security:
+ *       - BearerAuth: []  # Indicates that a Bearer token is required for to do data create
  *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: Bearer token to authenticate the user
- *         required: true
- *         schema:
- *           type: string
- *           example: "Bearer <JWT-TOKEN>"
  *       - in: body
  *         name: todo
  *         description: The todo task details
@@ -86,14 +81,8 @@ router.post('/todopage', create_todo);
  * /task/todopages:
  *   get:
  *     description: Retrieves all todo tasks for the authenticated user
- *     parameters:
- *       - in: header
- *         name: Authorization
- *         description: Bearer token to authenticate the user
- *         required: true
- *         schema:
- *           type: string
- *           example: "Bearer <JWT-TOKEN>"
+ *     security:
+ *       - BearerAuth: []  # Security definition requiring a Bearer token
  *     responses:
  *       200:
  *         description: Successfully retrieved the todo tasks
@@ -123,6 +112,7 @@ router.post('/todopage', create_todo);
  *         description: Internal server error
  */
 
+
 // Get all Todos
 router.get('/todopages', retrive_data);
 
@@ -131,6 +121,8 @@ router.get('/todopages', retrive_data);
  * /task/todo_update/{id}:
  *   put:
  *     description: Updates the todo task details by ID.
+ *     security:
+ *       - BearerAuth: []  # Security definition requiring a Bearer token with update data
  *     parameters:
  *       - in: path
  *         name: id
@@ -163,13 +155,6 @@ router.get('/todopages', retrive_data);
  *             email:
  *               type: string
  *               example: "user@example.com"
- *       - in: header
- *         name: Authorization
- *         description: Bearer token to authenticate the user
- *         required: true
- *         schema:
- *           type: string
- *           example: "Bearer <JWT-TOKEN>"
  *     responses:
  *       200:
  *         description: Todo task updated successfully
@@ -211,6 +196,8 @@ router.put('/todo_update/:id',update);
  * /task/todopage/{id}:
  *   delete:
  *     description: Deletes a todo task by ID.
+ *     security:
+ *       - BearerAuth: []  # Security definition requiring a Bearer token with endpoint
  *     parameters:
  *       - in: path
  *         name: id
@@ -219,13 +206,6 @@ router.put('/todo_update/:id',update);
  *         schema:
  *           type: integer
  *           example: 1
- *       - in: header
- *         name: Authorization
- *         description: Bearer token to authenticate the user
- *         required: true
- *         schema:
- *           type: string
- *           example: "Bearer <JWT-TOKEN>"
  *     responses:
  *       200:
  *         description: Todo task deleted successfully

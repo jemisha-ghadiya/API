@@ -1,5 +1,3 @@
-// index.js
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -41,7 +39,19 @@ const options = {
     },
     host: 'localhost:3000', // Replace with your actual host
     basePath: '/', // Base path for your API
-    
+    securityDefinitions: {
+      BearerAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: 'Please enter the token as: "Bearer <Your-JWT-Token>"',
+      },
+    },
+    security: [
+      {
+        BearerAuth: [],
+      }
+    ],
   },
   apis: ['./routes/*.js'], // Path to the API docs (e.g., route files where you use @swagger comments)
 };
@@ -53,7 +63,7 @@ const options = {
 //   apis:["./routes/*.js"],
 // };
 const spaces=swaggerjsdoc(options)
-app.use("/y",swaggerui.serve,swaggerui.setup(spaces))
+app.use("/api",swaggerui.serve,swaggerui.setup(spaces))
 // Start servers
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
