@@ -41,10 +41,28 @@ const router = express.Router();
  *               example: "user@example.com"
  *       400:
  *         description: Missing or invalid parameters
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "All field required"
  *       409:
  *         description: Email already exists
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Email Already exists"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 router.post("/signup",signup);
@@ -67,6 +85,7 @@ router.post("/signup",signup);
  *             email:
  *               type: string
  *               example: "user@example.com"
+ *               
  *             password:
  *               type: string
  *               example: "password123"
@@ -78,16 +97,40 @@ router.post("/signup",signup);
  *           properties:
  *             message:
  *               type: string
- *               example: "Signup successful"
+ *               example: "Login successful"
  *             email:
  *               type: string
  *               example: "user@example.com"
+ *             password:
+ *               type: string
+ *               example: "password123"
+ *             token:
+ *               type: string
+ *               example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjk0NywiaWF0IjoxNzM3Njk1NjcyLCJleHAiOjE3Mzc3ODIwNzJ9.SQDYvCoVnQ3PqhN8e2dLIMl8QjpHbOe4cYz21AmxWjQ"
  *       400:
  *         description: Missing or invalid parameters
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "All field required"
  *       409:
  *         description: Email already exists
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Email Already exists"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 router.post("/login",login);
@@ -121,8 +164,20 @@ router.post("/login",login);
  *                     example: "user123"
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Unauthorized"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 
@@ -181,10 +236,29 @@ router.get("/users",authenticateToken, get_userdata);
  *                   example: "newpassword123"
  *       400:
  *         description: Missing or invalid parameters
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "No changes made, or record not found"
  *       404:
  *         description: User not found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "User not Found"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
+ *         
  */
 
 router.put("/user/:id",authenticateToken, update_userdata);
@@ -216,10 +290,28 @@ router.put("/user/:id",authenticateToken, update_userdata);
  *               example: "User deleted successfully"
  *       400:
  *         description: Invalid or missing parameters
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "No changes made, or record not found"
  *       404:
  *         description: User not found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "User not Found"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "something went wrongs "
  */
 
 

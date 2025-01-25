@@ -67,10 +67,28 @@ const authenticateToken = require('../MiddleWare/authenticateToken');
  *                   example: "user@example.com"
  *       400:
  *         description: Missing or invalid parameters
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "All Field required(task,description,duration,email)"         
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Unauthorized"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 router.post('/todopage', create_todo);
@@ -108,8 +126,20 @@ router.post('/todopage', create_todo);
  *                 example: "user@example.com"
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Unauthorized"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 
@@ -180,13 +210,37 @@ router.get('/todopages', retrive_data);
  *               type: string
  *               example: "user@example.com"
  *       400:
- *         description: Missing or invalid parameters
+ *         description:  Task not found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Error updating task, or task not found"
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Unauthorized"
  *       404:
  *         description: Todo task not found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "todo task not Found"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 // Update a Todo by ID
@@ -215,14 +269,30 @@ router.put('/todo_update/:id',update);
  *             message:
  *               type: string
  *               example: "Todo task deleted successfully"
- *       400:
- *         description: Invalid or missing parameters
  *       401:
  *         description: Unauthorized - Invalid or missing token
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Unauthorized"
  *       404:
  *         description: Todo task not found
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "ToDo task not Found"
  *       500:
  *         description: Internal server error
+ *         schema:
+ *           type: object
+ *           properties:
+ *             message:
+ *               type: string
+ *               example: "Somthing went wrong"
  */
 
 // Delete a Todo by ID

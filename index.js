@@ -33,7 +33,7 @@ app.use("/task", taskRoutes);
 const options = {
   swaggerDefinition: {
     info: {
-      title: 'API Documentation',
+      title: 'API CRUD',
       version: '3.0.0',
       description: 'API documentation for the Node.js app',
     },

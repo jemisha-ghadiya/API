@@ -3,11 +3,11 @@ const { SECRET_KEY } = require('../config/jwt');
 const db = require('../config/db');
 
 const authenticateToken = async (req, res, next) => {
-  const token = req.header('Authorization');
+  // const token = req.header('Authorization');
 
   //below two line can use for the test case
-  // const authHeader = req.header('Authorization'); 
-  // const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.header('Authorization'); 
+  const token = authHeader && authHeader.split(' ')[1];
   console.log(token, "token");
 //   const slitetoken = token.split(' ')[1];
 //   console.log(slitetoken);
