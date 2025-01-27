@@ -24,7 +24,8 @@ app.set("views", path.join(__dirname, "views"));
 
 
  db.connect()
-.then(() => console.log("Database connected successfully"));
+.then(() => console.log("Database connected successfully"))
+.catch(err => console.log("Database connection error: ", err));
 
 // Routes
 // //app.use('/auth', authRoutes);
