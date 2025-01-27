@@ -16,7 +16,7 @@
     "swagger-ui-express": "^5.0.1"
   },
   "scripts": {
-    "start": "node index",
+    "start": "node server.js",
     "test": "mocha './test/**/*.js'"
   },
   "jest": {
