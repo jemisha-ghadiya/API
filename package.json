@@ -27,7 +27,7 @@
   },
   "name": "api",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "devDependencies": {
     "@babel/cli": "^7.26.4",
     "@babel/core": "^7.26.0",
