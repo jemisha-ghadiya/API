@@ -26,7 +26,9 @@ app.set("views", path.join(__dirname, "views"));
  db.connect()
 .then(() => console.log("Database connected successfully"))
 .catch(err => console.log("Database connection error: ", err));
-
+app.get("/user", (req, res) => {
+  res.status(200).send({ message: "welcome to the API" });
+});
 // Routes
 // //app.use('/auth', authRoutes);
 app.use("/user", userRoutes);
