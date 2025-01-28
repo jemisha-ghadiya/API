@@ -7,8 +7,8 @@ const db = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
-  },
- connectionTimeoutMillis: 10000
+  }
+
   // const db = new pg.Client({
   // user: process.env.DB_USER,
   // host: process.env.DB_HOST,
