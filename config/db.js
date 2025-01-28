@@ -9,7 +9,7 @@ const db = new Client({
     rejectUnauthorized: false,
   }
 
-  // const db = new pg.Client({
+  // const db = new Client({
   // user: process.env.DB_USER,
   // host: process.env.DB_HOST,
   // database: process.env.DB_NAME,
