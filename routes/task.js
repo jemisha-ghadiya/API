@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {create_todo,retrive_data,update,delete_todo} = require('../controllers/task');
+const {create_todo,retrive_data,update ,delete_todo, show_data} = require('../controllers/task');
 const authenticateToken = require('../MiddleWare/authenticateToken');
  router.use(authenticateToken)
 // Create a new 
@@ -144,6 +144,7 @@ router.post('/todopage', create_todo);
 
 
 // Get all Todos
+router.get('/todo/:id', show_data);
 router.get('/todopages', retrive_data);
 
 /**

@@ -1,4 +1,4 @@
-// method.js
+
 
 module.exports = {
     async hashPassword(password) {

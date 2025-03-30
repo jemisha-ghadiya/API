@@ -1,4 +1,4 @@
-// error.js
+
 
 module.exports = {
     handleValidationError: (errors) => {

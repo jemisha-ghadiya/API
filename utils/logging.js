@@ -1,4 +1,4 @@
-// logging.js
+
 
 module.exports = {
     logInfo: (message) => {

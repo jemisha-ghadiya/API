@@ -3,8 +3,7 @@ const { body } = require("express-validator");
 const {signup,login,get_userdata,update_userdata,delete_userdata} = require("../controllers/user.js");
 const authenticateToken = require("../MiddleWare/authenticateToken");
 const router = express.Router();
-// const{  signinValidation}=require('../utils/validation')
-
+const {upload} =require('../MiddleWare/profile_update.js')
 /**
  * @swagger
  * /user/signup:
@@ -261,7 +260,7 @@ router.get("/users",authenticateToken, get_userdata);
  *         
  */
 
-router.put("/user/:id",authenticateToken, update_userdata);
+router.put("/user/:id",authenticateToken, upload.single("profile"), update_userdata);
 
 
 /**

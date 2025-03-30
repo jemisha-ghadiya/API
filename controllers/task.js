@@ -1,4 +1,4 @@
-//const { db } = require('../models/database');
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config/jwt");
@@ -32,7 +32,6 @@ const create_todo = [taskValidation,async (req, res) => {
     );
     
     res.status(200).json({ message: "Data inserted successfully" });
-    // throw new Error("Simulated internal server error");  
   } catch (error) {
     console.error("Error adding task:", error);
     res.status(500).json({ error: "Failed to add task" });
@@ -44,6 +43,22 @@ const retrive_data = async (req, res) => {
   console.log(req.userId, "user!!!!!!!!!!!!!");
   try {
     const result = await todotask.gettododataById(req.userId);
+    console.log(result.rows, "9999999999999999999999");
+    const todoAllData = result.rows;
+    res.status(200).json({ todoAllData });
+  } catch (error) {
+    console.error("Error adding task:", error);
+    res.status(500).json({ error: "Failed to add task" });
+  }
+};
+
+const show_data = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req;
+  console.log("get todo");
+  console.log(req.userId, "user!!!!!!!!!!!!!");
+  try {
+    const result = await todotask.getdataById(id, userId);
     console.log(result.rows, "9999999999999999999999");
     const todoAllData = result.rows;
     res.status(200).json({ todoAllData });
@@ -125,4 +140,4 @@ const delete_todo = async (req, res) => {
   }
 };
 
-module.exports = { create_todo, retrive_data, update, delete_todo };
+module.exports = { create_todo, retrive_data, update, delete_todo, show_data };
